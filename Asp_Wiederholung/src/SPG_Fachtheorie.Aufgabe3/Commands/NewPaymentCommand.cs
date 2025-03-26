@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SPG_Fachtheorie.Aufgabe3.Commands
 {
@@ -6,11 +7,10 @@ namespace SPG_Fachtheorie.Aufgabe3.Commands
     {
         public int CashDeskNumber { get; set; }
 
-        [Required]
         public DateTime PaymentDateTime { get; set; }
 
         [Required]
-        public string PaymentType { get; set; }
+        public string PaymentType { get; set; } = null!;
 
         public int EmployeeRegistrationNumber { get; set; }
 
@@ -18,6 +18,5 @@ namespace SPG_Fachtheorie.Aufgabe3.Commands
         {
             return PaymentDateTime <= DateTime.Now.AddMinutes(1);
         }
-
     }
 }

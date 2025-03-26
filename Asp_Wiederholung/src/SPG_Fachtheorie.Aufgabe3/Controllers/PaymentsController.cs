@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SPG_Fachtheorie.Aufgabe1.Infrastructure;
 using SPG_Fachtheorie.Aufgabe1.Model;
+using SPG_Fachtheorie.Aufgabe3.Commands;
 using SPG_Fachtheorie.Aufgabe3.Dtos;
 
 namespace SPG_Fachtheorie.Aufgabe3.Controllers
@@ -31,7 +32,7 @@ namespace SPG_Fachtheorie.Aufgabe3.Controllers
                 p.PaymentItems.Select(pi => new PaymentItemDto(
                     pi.ArticleName,
                     pi.Amount,
-                    pi.Price))
+                    pi.Price, null))
                 .ToList()
                 ))
                 .FirstOrDefault();
@@ -189,6 +190,47 @@ namespace SPG_Fachtheorie.Aufgabe3.Controllers
                     HttpContext,
                     statusCode: StatusCodes.Status400BadRequest,
                     title: "Error creating payment",
+                    detail: ex.Message));
+            }
+        }
+
+        [HttpPatch("{id}")]
+        public ActionResult UpdateConfirmed(int id, [FromBody] UpdateConfirmedCommand command)
+        {
+            
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var payment = _db.Payments
+                    .FirstOrDefault(p => p.Id == id);
+
+                if (payment == null)
+                {
+                    return NotFound(ProblemDetailsFactory.CreateProblemDetails(
+                        HttpContext,
+                        statusCode: StatusCodes.Status404NotFound,
+                        title: "Payment not found",
+                        detail: $"Payment with ID {id} does not exist."));
+                }
+
+                
+                payment.Confirmed = command.Confirmed;
+                payment.LastUpdated = DateTime.Now;
+
+                _db.SaveChanges();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ProblemDetailsFactory.CreateProblemDetails(
+                    HttpContext,
+                    statusCode: StatusCodes.Status400BadRequest,
+                    title: "Error updating payment",
                     detail: ex.Message));
             }
         }

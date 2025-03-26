@@ -26,6 +26,7 @@ namespace SPG_Fachtheorie.Aufgabe3.Controllers
         /// GET /api/employees?type=manager     --> type = manager
         /// GET /api/employees?type=            --> type = ""
         /// </summary>
+        
         [HttpGet]
         public ActionResult<List<EmployeeDto>> GetAllEmployees([FromQuery] string? type)
         {
