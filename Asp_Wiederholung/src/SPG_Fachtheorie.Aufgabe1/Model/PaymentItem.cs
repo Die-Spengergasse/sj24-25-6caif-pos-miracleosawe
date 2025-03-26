@@ -1,25 +1,45 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 
-namespace SPG_Fachtheorie.Aufgabe1.Model
+namespace SPG_Fachtheorie.Aufgabe1.Controllers
 {
-    public class PaymentItem
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PaymentsController : ControllerBase
     {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-        protected PaymentItem() { }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-        public PaymentItem(string articleName, int amount, decimal price, Payment payment)
+        private readonly ApplicationDbContext _context;
+
+        public PaymentsController(ApplicationDbContext context)
         {
-            ArticleName = articleName;
-            Amount = amount;
-            Price = price;
-            Payment = payment;
+            _context = context;
         }
 
+        // PUT: api/paymentItems/1
+        [HttpPut("paymentItems/{id}")]
+        public IActionResult UpdatePaymentItem(int id, [FromBody] PaymentItemUpdateDto paymentItemDto)
+        {
+            var paymentItem = _context.PaymentItems.FirstOrDefault(pi => pi.Id == id);
+            if (paymentItem == null)
+            {
+                return NotFound();
+            }
+
+            paymentItem.Update(paymentItemDto.ArticleName, paymentItemDto.Amount, paymentItemDto.Price);
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+    }
+
+    // DTO für die Aktualisierung von PaymentItems
+    public class PaymentItemUpdateDto
+    {
         public int Id { get; set; }
-        [MaxLength(255)]
         public string ArticleName { get; set; }
         public int Amount { get; set; }
         public decimal Price { get; set; }
-        public Payment Payment { get; set; }
+        public int PaymentId { get; set; }
+        public DateTime? LastUpdated { get; set; }
     }
 }
