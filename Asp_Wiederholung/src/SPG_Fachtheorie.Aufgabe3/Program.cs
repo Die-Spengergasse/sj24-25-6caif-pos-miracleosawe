@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SPG_Fachtheorie.Aufgabe1.Infrastructure;
+using SPG_Fachtheorie.Aufgabe1.Services;
 using System.Runtime.InteropServices.Marshalling;
 
 public class Program
@@ -12,6 +13,7 @@ public class Program
         {
             opt.UseSqlite("DataSource=cash.db");
         });
+        builder.Services.AddScoped<EmployeeService>();
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
