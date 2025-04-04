@@ -1,8 +1,10 @@
-﻿using SPG_Fachtheorie.Aufgabe1.Model;
-
-namespace SPG_Fachtheorie.Aufgabe3.Dtos
+﻿namespace SPG_Fachtheorie.Aufgabe3.Dtos
 {
-    public record PaymentDetailDto(int id, string employeeFirstName,
-        string employeeLastName, int cashDeskNumber,
-        string paymentType, List<PaymentItemDto> paymentItems);
+    public record PaymentDetailDto(
+        int Id, string EmployeeFirstName, string EmployeeLastName,
+        int CashDeskNumber, string PaymentType,
+        List<PaymentItemDto> PaymentItems);
+
+    public record PaymentItemDto(
+        string ArticleName, int Amount, decimal Price);
 }

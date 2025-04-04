@@ -1,6 +1,7 @@
 ﻿namespace SPG_Fachtheorie.Aufgabe3.Dtos
 {
-    public record PaymentDto(int id, string employeeFirstName,
-        string employeeLastName, int cashDeskNumber, 
-        string paymentType, int totalAmount);
+    public record PaymentDto(
+        int Id, string EmployeeFirstName, string EmployeeLastName,
+        DateTime PaymentDateTime,
+        int CashDeskNumber, string PaymentType, decimal TotalAmount);
 }
