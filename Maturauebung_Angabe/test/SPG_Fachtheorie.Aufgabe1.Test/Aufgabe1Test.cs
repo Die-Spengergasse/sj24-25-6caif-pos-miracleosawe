@@ -43,9 +43,8 @@ namespace SPG_Fachtheorie.Aufgabe1.Test
             using var db = GetEmptyDbContext();
 
             var Name = new Name("Miracle", "Osawe");
-            var Topic = Model.Topic.SofwareEngeering;
 
-            var Speaker = new Speaker(Name, "email@gmail.com", Topic);
+            var Speaker = new Speaker(Name, "email@gmail.com", Topic.SofwareEngeering);
             // Act
             db.Add(Speaker);
             db.SaveChanges();
@@ -70,16 +69,14 @@ namespace SPG_Fachtheorie.Aufgabe1.Test
 
             // Speaker
             var Name = new Name("Miracle", "Osawe");
-            var Topic = Model.Topic.DatabaseSystems;
-            var Speaker = new Speaker(Name, "user@email.com", Topic);
+            var Speaker = new Speaker(Name, "user@email.com", Topic.Operations);
 
             // Attendee
             var AttendeeName = new Name("Teacher", "Boss");
             var Attendee = new Attendee(AttendeeName, "teacher@gmail.com", new DateTime(2004, 10, 07));
 
             // Course
-            var Topic2 = Model.Topic.DatabaseSystems;
-            var Course = new Course("String", "programmieren", "move and dance", Topic2, new DateTime(2025, 05, 23), Speaker);
+            var Course = new Course("String", "programmieren", "move and dance", Topic.SofwareEngeering, new DateTime(2025, 05, 23), Speaker);
 
             var CourseSub = new CourseSubscription(Course, Attendee, new DateTime(2003, 03, 03), "bought");
             // Act
@@ -103,19 +100,16 @@ namespace SPG_Fachtheorie.Aufgabe1.Test
             using var db = GetEmptyDbContext();
             // Arrange
             var Name = new Name("Miracle", "Osawe");
-            var Topic = Model.Topic.DatabaseSystems;
-            var Speaker = new Speaker(Name, "user@email.com", Topic);
+            var Speaker = new Speaker(Name, "user@email.com", Topic.SofwareEngeering);
 
             // Act
             db.Add(Speaker);
             db.SaveChanges();
 
             // Assert
-            // db.ChangeTracker.Clear();
-            // var UserTyeFromDb = db.CourseSubscriptions.First();
-            // Assert.True(UserTyeFromDb.UserType = Speaker.UserType);
-            
+            db.ChangeTracker.Clear();
+            var UserTyeFromDb = db.Speakers.First();
+            Assert.True(UserTyeFromDb.UserType == Speaker.UserType);
         }
-
     }
 }
