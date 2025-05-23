@@ -111,9 +111,9 @@ namespace SPG_Fachtheorie.Aufgabe1.Test
             db.SaveChanges();
 
             // Assert
-            // db.ChangeTracker.Clear();
-            // var UserTyeFromDb = db.CourseSubscriptions.First();
-            // Assert.True(UserTyeFromDb.UserType = Speaker.UserType);
+            db.ChangeTracker.Clear();
+            var UserTyeFromDb = db.Speakers.First();
+            Assert.True(UserTyeFromDb.UserType == Speaker.UserType);
             
         }
 
