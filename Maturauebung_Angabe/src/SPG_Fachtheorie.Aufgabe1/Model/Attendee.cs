@@ -5,7 +5,7 @@ namespace SPG_Fachtheorie.Aufgabe1.Model
 {
     public class Attendee : User
     {
-        public Attendee() {}
+        private Attendee() {}
         public Attendee(Name name, string email, DateTime dateOfBirth)
         {
             Name = name;

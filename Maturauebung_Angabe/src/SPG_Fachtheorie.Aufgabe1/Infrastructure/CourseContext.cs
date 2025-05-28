@@ -24,6 +24,7 @@ namespace SPG_Fachtheorie.Aufgabe1.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasDiscriminator(u => u.UserType);
+            modelBuilder.Entity<User>().OwnsOne(u => u.Name);
         }
 
     }
