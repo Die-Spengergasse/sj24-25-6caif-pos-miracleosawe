@@ -3,5 +3,5 @@
 namespace SPG_Fachtheorie.Aufgabe3.Dtos
 {
     // TODO: Füge nötige Properties hinzu.
-    public record PossibleAnswerDto(int Id, Question Question, string Text, int Points);
+    public record PossibleAnswerDto(string Text, int Points);
 }

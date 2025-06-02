@@ -29,7 +29,31 @@ namespace SPG_Fachtheorie.Aufgabe3.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ExamDto>> GetExamById(int id, [FromQuery] bool includeAnswers)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var exam = await _db.Exams
+                .Include(e => e.Questions)
+                    .ThenInclude(q => q.PossibleAnswers)
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+                if (exam == null)
+                    return NotFound("Exam not found");
+
+                var examDto = new ExamDto(
+                    exam.Id,
+                    exam.Name,
+                    exam.FailThreshold,
+                    exam.Questions.Select(q => new QuestionDto(
+                        q.Id,
+                        q.Text,
+                        includeAnswers ? q.PossibleAnswers.Select(a => new PossibleAnswerDto(a.Text, a.Points)).ToList() : new List<PossibleAnswerDto>())).ToList());
+                return Ok(examDto);
+            }
+
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
@@ -42,7 +66,7 @@ namespace SPG_Fachtheorie.Aufgabe3.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateThreshold(int id, [FromBody] UpdateThresholdCommand cmd)
         {
-            throw new NotImplementedException();
+            try {}
         }
 
         /// <summary>
